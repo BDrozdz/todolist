@@ -15,32 +15,17 @@ session_start();
     <!-- <script src="js/bootstrap.js"></script> -->
     <link href="todo.css" rel="stylesheet">
     <!-- <script src="todo.js"></script> -->
-    <body>
-    <div id="todo-wrap">
-      <!-- (A) HEADER -->
-      <h1>TO DO LIST</h1>
-      
-      <!-- (B) ADD NEW ITEM -->
-      <form id="todo-add" action="todo.php" method="post"> 
-        <input type="text" id="Additem" placeholder="New Item" name="addfield" required />
-        <input type="submit" id="todo-save" value="&#10010;"/>
-      </form>
-      
-      <!-- (C) DELETE ITEMS -->
-      <div id="todo-del">
-        <input type="button" value="Delete All" id="todo-delall" />
-        <input type="button" value="Delete Completed" id="todo-delcom"/>
-      </div>
-      
-      <!-- (D) LIST ITEMS -->
-      <div id="todo-list"></div>
-      <?php displayTask() ?>
-    </div>
-  </body>
-  <script>
-  </script>
-</html>
+
+</head>
+
 <?php
+
+var_dump($_POST);
+
+if (isset($POST['clear']))
+{
+  session_destroy(); 
+} 
 
 if (isset($POST['statusTask']))
 {
@@ -51,7 +36,7 @@ else
   $statusTask = 0;
 }
 
-if (isset($_POST['addfield']))
+if (isset($_POST['commande']))
 {
     $libTask = trim($_POST['addfield']); 
 } 
@@ -60,13 +45,11 @@ else
     $libTask ="";
 }
 
-$libTask = "essai task 5";
-
 function DisplayTask(){
 
   $task= loadTask(); 
   
-  var_dump($task);
+  //var_dump($task);
 
   foreach($task as $item){?>
     <div class="todo-row" data-id="<?php (int)($item['taskid']) ?>">
@@ -78,7 +61,8 @@ function DisplayTask(){
   <?php }      
 }
 
-if(!$libTask==''){
+var_dump($libTask);
+if(!$libTask==""){
 
   addTask($libTask,$statusTask);
 
@@ -96,33 +80,56 @@ function loadTask(){
 
 function addTask($libTask,$statusTask){
 
-  var_dump($libTask);
-  var_dump($statusTask);
-
+  
   $task= loadTask(); 
   $newTaskid = count($task) + 1;
   
-  $taskNew = [['taskid'=> $newTaskid, 'libele'=>$libTask, 'status'=>$statusTask],];
+  //$taskNew = [['taskid'=> $newTaskid, 'libele'=>$libTask, 'status'=>$statusTask],];
 
-  //$time = [['selectedtime' => 'Brussels', 'continent' => 'Europe', 'fuseau' => 'UTC', 'decalage' => 'GMT +01:00'],
+   $time = [['selectedtime' => 'Brussels', 'continent' => 'Europe', 'fuseau' => 'UTC', 'decalage' => 'GMT +01:00'],];
   //['selectedtime' => 'Paris','continent' => 'Europe' , 'fuseau' => 'UTC', 'decalage' =>'GMT +01:00'],];
   //$json[$time["selectedtime"]] = array("continent" => $time["continent"], "fuseau" => $time["fuseau"], "decalage" => $time["decalage"]); 
 
-  var_dump($taskNew);
+  //var_dump($taskNew);
 
-  $values[$task['taskid']] = array('libele'=>$taskNew['libele'], 'status'=>$taskNew['status']);
+  //$values[$task["taskid"]] = array("libele"=>$taskNew["libele"], "status"=>$taskNew["status"]);
   //  var_dump($values);
-  //  $json[$time["selectedtime"]] = array("continent" => $time["continent"], "fuseau" => $time["fuseau"], "decalage" => $time["decalage"]); 
-  $task = array_merge($task, $values);
+  $json[$time["selectedtime"]] = array("continent" => $time["continent"], "fuseau" => $time["fuseau"], "decalage" => $time["decalage"]); 
+  $task = array_merge($task, $json);
      
   $file="todo2.json";
-  file_put_contents($file, json_encode($task,TRUE));
+  //file_put_contents($file, json_encode($task,TRUE));
 }
-?>
+?> 
 
-
-
+    <body>
+    <div id="todo-wrap">
+      <!-- (A) HEADER -->
+      <h1>TO DO LIST</h1>
+      
+      <!-- (B) ADD NEW ITEM -->
+      <form id="todo-add" action="todo.php" method="post"> 
+        <input type="text" id="Additem" placeholder="New Item" name="addfield" required />
+        <input type="submit" id="todo-save" value="&#10010;" name="commande"/>
+      </form>
+      
+      <!-- (C) DELETE ITEMS -->
+      <div id="todo-del">
+        <input type="button" value="Delete All" id="todo-delall" />
+        <input type="button" value="Delete Completed" id="todo-delcom"/>
+        <input type="submit" id="todo-delete" name="clear"/>
+      </div>
+      
+      <!-- (D) LIST ITEMS -->
+      <div id="todo-list"></div>
+      <?php displayTask() ?>
+    </div>
+  </body>
+  <script>
+  </script>
+</html>
 <?php
+
 /*$todo = [['tasks' => '0','libele' => 'Test1', 'statut' => '0'],['tasks' => '1','libele' => 'Test2','statut' => '0']];
 
 foreach ($todo as $key => $todo){
