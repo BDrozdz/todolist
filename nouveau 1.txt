@@ -1,0 +1,15 @@
+$postarray= your $_POST JSON ;
+
+//read and decode the file
+$current = json_decode( file_get_contents($file) , true );
+
+//SET ID FROM THE POST JSON
+$current['uid']=$postarray[$uid];
+
+//LOOP THE POST QUESTION AND PUT THEM IN THE ARRAY
+foreach($postarray['selected'] as $q){
+
+   $current[ 'question' ][ $q[ 'questionsid' ] ]= $q[ 'val' ]; 
+
+}
+
