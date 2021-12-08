@@ -1,5 +1,5 @@
 <?php
-    $json = '{
+$json = '{
   "uid":1,
   "selected":[
      {
@@ -16,27 +16,6 @@
 $_POST = json_decode($json, true);
 
 $uid = $_POST['uid'];
-//$answers = $_POST['selected'];
-
-//$_POST = json_decode($json, true);
-
-//read and decode the file
-$current = json_decode( file_get_contents($json), true );
-
-//SET ID FROM THE POST JSON
-$current['uid']=$postarray[$uid];
-
-//LOOP THE POST QUESTION AND PUT THEM IN THE ARRAY
-foreach($postarray['selected'] as $q){
-
-   $current[ 'question' ][ $q[ 'questionsid' ] ]= $q[ 'val' ]; 
-
-}
-?>
-
-<?php
-/*
-$uid = $_POST['uid'];
 $answers = $_POST['selected'];
 
 $current = ''; // fgc 
@@ -50,5 +29,8 @@ foreach ($answers as $item) {
     }
     $current .= rtrim($line, ', ')."\n";
 }
-*/
+print_r($current);
+$file="todo12.json";
+file_put_contents($file, json_encode($current,TRUE));
+
 ?>
