@@ -13,3 +13,51 @@ foreach($postarray['selected'] as $q){
 
 }
 
+------------------------------------------------------
+
+<?php
+
+/*$todo = [['tasks' => '0','libele' => 'Test1', 'statut' => '0'],['tasks' => '1','libele' => 'Test2','statut' => '0']];
+
+foreach ($todo as $key => $todo){
+  foreach($todo as $item => $value){
+      echo $item. ' : ' .$value. '<br>';
+      $json[$todo["tasks"]] = array("libele" => $todo["libele"], "statut" => $todo["statut"]);              
+  }
+  echo '<br>';
+}*/
+/*
+if(!$libTask=="")
+{
+  var_dump($libTask);
+  var_dump($statusTask);
+  saveTask($libTask,$statusTask);
+}
+
+function saveTask($libTask,$statusTask){
+  $file="todo1.json";
+  //$todo =  [['task' => 0,'libele' => $libTask, 'statut' => $statusTask]];
+  $todo = [$libTask,$statusTask];
+  var_dump($todo);
+  // $json[$todo['task']] = array('libele'=>$todo['libele'], 'statut' => $todo['statut']);
+  // $json[$todo['task']] = array('task' => $todo[0], 'libele'=>$todo[1], 'statut' => $todo[2]);
+  //$json[$todo['task']] = array('libele'=>$todo[1], 'statut' => $todo[2]);
+  
+  file_put_contents($file, json_encode($todo,TRUE));
+
+} */
+
+?>
+
+------------------------------------------
+//$taskNew = [['taskid'=> $newTaskid, 'libele'=>$libTask, 'status'=>$statusTask],];
+
+  //$time = [['selectedtime' => 'Brussels', 'continent' => 'Europe', 'fuseau' => 'UTC', 'decalage' => 'GMT +01:00'],];
+  //['selectedtime' => 'Paris','continent' => 'Europe' , 'fuseau' => 'UTC', 'decalage' =>'GMT +01:00'],];
+  //$json[$time["selectedtime"]] = array("continent" => $time["continent"], "fuseau" => $time["fuseau"], "decalage" => $time["decalage"]); 
+
+  //var_dump($taskNew);
+
+  //$values[$task["taskid"]] = array([["libele"=>$taskNew["libele"], "status"=>$taskNew["status"]]]);
+  //  var_dump($values);
+  //$json[$time["selectedtime"]] = array("continent" => $time["continent"], "fuseau" => $time["fuseau"], "decalage" => $time["decalage"]); 

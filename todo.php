@@ -14,13 +14,12 @@ session_start();
     <link rel="stylesheet" href="todo.css">
     <!-- <script src="js/bootstrap.js"></script> -->
     <link href="todo.css" rel="stylesheet">
-    <!-- <script src="todo.js"></script> -->
 
 </head>
 
 <?php
 
-var_dump($_POST);
+/*var_dump($_POST);*/
 
 if (isset($POST['clear']))
 {
@@ -49,16 +48,23 @@ function DisplayTask(){
 
   $task= loadTask(); 
   
-  //var_dump($task);
+  /*var_dump($task);*/
+  $dataToChek = $task; 
+  /*var_dump($dataToChek);*/
+
+  if(count((array)$dataToChek)) {
 
   foreach($task as $item){?>
-    <div class="todo-row" data-id="<?php (int)($item['taskid']) ?>">
-      <div class="todo-item cx"><?php echo $item['libele']; ?>
-        <input type="button" class="todo-cx" value="&#10006;">
-        <input type="button" class="todo-ok" value="&#10004;">
+    <form id="todo-add" action="todo.php" method="post"> 
+      <div class="todo-row" id="<?php (int)$item['taskid'] ?>">
+        <div class="todo-item cx"><?php echo $item['libele']; ?>
+          <input type="button" class="todo-cx" value="&#10006;">
+          <input type="button" class="todo-ok" value="&#10004;">
+      </div>
     </div>
-    </div>
+    </form>
   <?php }      
+  }
 }
 
 var_dump($libTask);
@@ -70,57 +76,47 @@ if(!$libTask==""){
 
 function loadTask(){
 
-  $file="todo2.json";
-  $data = file_get_contents($file);
-  $_POST = json_decode($data, true); 
-  $tasklist = $_POST['task'];
+  $file="taskfile.json";
+  $jsonString = file_get_contents($file);
+  $tasklist = json_decode($jsonString, true); 
   return $tasklist;
-
+  
 }
 
 function addTask($libTask,$statusTask){
-
   
-  $task= loadTask(); 
-  $newTaskid = count($task) + 1;
-  
-  //$taskNew = [['taskid'=> $newTaskid, 'libele'=>$libTask, 'status'=>$statusTask],];
+  $task = loadTask(); 
+  $dataToChek = $task; 
+  $newTaskid = (count((array)$dataToChek));
 
-   $time = [['selectedtime' => 'Brussels', 'continent' => 'Europe', 'fuseau' => 'UTC', 'decalage' => 'GMT +01:00'],];
-  //['selectedtime' => 'Paris','continent' => 'Europe' , 'fuseau' => 'UTC', 'decalage' =>'GMT +01:00'],];
-  //$json[$time["selectedtime"]] = array("continent" => $time["continent"], "fuseau" => $time["fuseau"], "decalage" => $time["decalage"]); 
-
-  //var_dump($taskNew);
-
-  //$values[$task["taskid"]] = array("libele"=>$taskNew["libele"], "status"=>$taskNew["status"]);
-  //  var_dump($values);
-  $json[$time["selectedtime"]] = array("continent" => $time["continent"], "fuseau" => $time["fuseau"], "decalage" => $time["decalage"]); 
-  $task = array_merge($task, $json);
+  $taskToAdd = array(['taskid'=>$newTaskid,'libele'=>$libTask,'status'=>$statusTask]);
+   
+  $taskfile = "taskfile.json";
+  $jsonString = file_get_contents($taskfile);
+  $task = (json_decode($jsonString, true));
+  /*var_dump($task);
+  var_dump($taskToAdd);*/
+  $task = array_merge($task, $taskToAdd);
      
-  $file="todo2.json";
-  //file_put_contents($file, json_encode($task,TRUE));
+  file_put_contents($taskfile, json_encode($task,TRUE));
 }
 ?> 
 
     <body>
     <div id="todo-wrap">
-      <!-- (A) HEADER -->
       <h1>TO DO LIST</h1>
-      
-      <!-- (B) ADD NEW ITEM -->
+  
       <form id="todo-add" action="todo.php" method="post"> 
         <input type="text" id="Additem" placeholder="New Item" name="addfield" required />
         <input type="submit" id="todo-save" value="&#10010;" name="commande"/>
       </form>
       
-      <!-- (C) DELETE ITEMS -->
       <div id="todo-del">
         <input type="button" value="Delete All" id="todo-delall" />
         <input type="button" value="Delete Completed" id="todo-delcom"/>
         <input type="submit" id="todo-delete" name="clear"/>
       </div>
-      
-      <!-- (D) LIST ITEMS -->
+
       <div id="todo-list"></div>
       <?php displayTask() ?>
     </div>
@@ -128,36 +124,3 @@ function addTask($libTask,$statusTask){
   <script>
   </script>
 </html>
-<?php
-
-/*$todo = [['tasks' => '0','libele' => 'Test1', 'statut' => '0'],['tasks' => '1','libele' => 'Test2','statut' => '0']];
-
-foreach ($todo as $key => $todo){
-  foreach($todo as $item => $value){
-      echo $item. ' : ' .$value. '<br>';
-      $json[$todo["tasks"]] = array("libele" => $todo["libele"], "statut" => $todo["statut"]);              
-  }
-  echo '<br>';
-}*/
-/*
-if(!$libTask=="")
-{
-  var_dump($libTask);
-  var_dump($statusTask);
-  saveTask($libTask,$statusTask);
-}
-
-function saveTask($libTask,$statusTask){
-  $file="todo1.json";
-  //$todo =  [['task' => 0,'libele' => $libTask, 'statut' => $statusTask]];
-  $todo = [$libTask,$statusTask];
-  var_dump($todo);
-  // $json[$todo['task']] = array('libele'=>$todo['libele'], 'statut' => $todo['statut']);
-  // $json[$todo['task']] = array('task' => $todo[0], 'libele'=>$todo[1], 'statut' => $todo[2]);
-  //$json[$todo['task']] = array('libele'=>$todo[1], 'statut' => $todo[2]);
-  
-  file_put_contents($file, json_encode($todo,TRUE));
-
-} */
-
-?>
